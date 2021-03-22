@@ -28,13 +28,17 @@ function App() {
     });
   };
 
-  const refresh = () => (
-    requests
+  const refresh = () => {
+    const topPercent = imgRef.current.offsetHeight ? Math.round(targetBoxDimension.top / imgRef.current.offsetHeight * 100) : 25;
+    const leftPercent = imgRef.current.offsetWidth ? Math.round(targetBoxDimension.left / imgRef.current.offsetWidth * 100) : 25;
+    const widthPercent = imgRef.current.offsetWidth ? Math.round(targetBoxDimension.width / imgRef.current.offsetWidth * 100) : 50;
+    const heightPercent = imgRef.current.offsetHeight ? Math.round(targetBoxDimension.height / imgRef.current.offsetHeight * 100) : 50;
+    return requests
       .detection({
-        top: Math.round(targetBoxDimension.top / imgRef.current.offsetHeight * 100),
-        left: Math.round(targetBoxDimension.left / imgRef.current.offsetWidth * 100),
-        width: Math.round(targetBoxDimension.width / imgRef.current.offsetWidth * 100),
-        height: Math.round(targetBoxDimension.height / imgRef.current.offsetHeight * 100)
+        top: topPercent,
+        left: leftPercent,
+        width:  widthPercent,
+        height: heightPercent,
       })
       .then(res => res.json())
       .then(({ path, score }) => {
@@ -44,7 +48,7 @@ function App() {
           setTimeout(handleResize, 100);
         }
       })
-  );
+  };
 
   useEffect(() => {
     refresh();
